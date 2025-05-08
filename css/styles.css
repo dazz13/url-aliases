@@ -33,28 +33,28 @@ td {
 }
 
 .jumbotron {
-    color: #E0B0FF;
-    background-color: #f0f0f0;
-    margin: 10px;
-    padding-top: 20px;
-    padding-bottom: 10px;
+    color: #000;
+    background-color: #eee;
+    margin: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 a {
-    color: white;
+    color: black;
     text-decoration: none;
 }
 
 a:hover {
-    color: white;
+    color: black;
     text-decoration: none;
 }
 
 input[type=text] {
     width: 100px;
     border: #f0f0f0;
-    border-radius: 20px;
-    padding: 2px 8px
+    border-radius: 0px;
+    padding: 0px 0px
 }
 
 input[type=text]:focus {
@@ -65,25 +65,27 @@ input[type=text]:focus {
 
 .button {
     border: none;
-    border-radius: 150px;
+    border-radius: 0px;
     padding: 0px 8px;
     background-color: #B0B0B0;
-    color: white;
+    color: black;
 }
 
 .button:hover {
     background-color: #ff5c5c;
-    color: white;
+    color: black;
 }
 
 .alias-widget {
+    color: black;
     display: block;
-    margin: 10px 10px;
+    margin: 0;
     width: min-content;
-    border-radius: 40px;
-    background-color: #E0B0FF;
-    padding: 5px 5px;
+    border-radius: 0;
+    background-color: #fff;
+    padding: 0;
     white-space: nowrap;
+    border: 1px solid #ccc;
 }
 
 .field {
@@ -91,5 +93,8 @@ input[type=text]:focus {
 }
 
 .badge {
-    margin: 0 10px;
+    margin: 0 0px;
+    color: black;
+    border-radius: 0;
+    border-right: 1px solid #ccc;
 }

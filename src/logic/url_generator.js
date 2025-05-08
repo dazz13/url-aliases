@@ -12,6 +12,7 @@ export default class UrlGenerator {
     }
     try {
       let url_orig = url;
+      console.log(url_orig, 'worked!');
       new URL(url_orig);
       return url_orig;
     } catch (error) {
@@ -20,11 +21,14 @@ export default class UrlGenerator {
     try {
       let url_new = "https://" + url;
       new URL(url_new);
+      console.log(url_new, 'worked!');
       return url_new;
     } catch(error) {
       console.log(UrlGenerator.INVALID_URL_MESSAGE);
     }
-    return UrlGenerator.convert_to_search(url);
+    let url_ret = UrlGenerator.convert_to_search(url);
+    console.log('Returning search: ' + url_ret);
+    return url_ret;
   }
 
   static convert_to_search(text) {

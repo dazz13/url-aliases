@@ -4,16 +4,16 @@ import AliasWidgetGenerator from "/src/widgets/alias-widgets/alias_widget_genera
 import AliasController from "/src/logic/alias_controller.js"
 
 
-
 function setup() {
-    let alias_controller = new AliasController();
+  let alias_controller = new AliasController();
 
-    let alias_widget_generator = new AliasWidgetGenerator(alias_controller);
-    let alias_addition_widget_generator = new AliasAdditionWidgetGenerator(alias_controller, alias_widget_generator);
-    let alias_creation_widget_generator = new AliasCreationWidgetGenerator(alias_addition_widget_generator);
+  let alias_widget_generator = new AliasWidgetGenerator(alias_controller);
+  let alias_addition_widget_generator = new AliasAdditionWidgetGenerator(alias_controller, alias_widget_generator);
+  let alias_creation_widget_generator = new AliasCreationWidgetGenerator(alias_addition_widget_generator);
 
-    alias_creation_widget_generator.create();
-    alias_widget_generator.create_existing_aliases();
+  alias_creation_widget_generator.create();
+  alias_widget_generator.create_existing_aliases();
+  $(document).ready(get_active_url);
 }
 
-window.onload = setup 
+window.onload = setup

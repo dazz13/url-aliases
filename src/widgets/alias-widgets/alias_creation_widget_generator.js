@@ -12,7 +12,7 @@ export default class AliasCreationWidgetGenerator extends BaseAliasWidgetGenerat
         this.add_button_action = this.add_button_action.bind(this);
     }
 
-    create_content() {
+    async create_content() {
         let widget_content = Widget.create_form()
         widget_content.appendChild(this.create_add_button());
         return widget_content;

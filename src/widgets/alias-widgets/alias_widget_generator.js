@@ -20,14 +20,14 @@ export default class AliasWidgetGenerator extends BaseAliasWidgetGenerator {
     }
   }
 
-  create(alias) {
+  async create(alias) {
     let widget = this.create_widget();
-    widget.appendChild(this.create_content(alias));
+    widget.appendChild(await this.create_content(alias));
     this.append(widget);
     this.delete_button_action = this.delete_button_action.bind(this);
   }
 
-  create_content(alias) {
+  async create_content(alias) {
     let widget_content = Widget.create_form();
     widget_content.appendChild(this.create_delete_button());
     widget_content.setAttribute(AliasWidgetGenerator.ALIAS_ID, alias.id);

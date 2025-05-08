@@ -20,7 +20,7 @@
    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA06U/+otqmk6P3optgw+yGVte3XoY0cjObX81UsIiDRW2jgyQt3XAGei53ibWnVhJnhg9falsCpmwRb1Bp7fPAgVSLB+HawdlwsWosHldj93uJowMDmm0B30n+qH5Y9IGkHuwb1Z5OcwzAdpHyyEbU2xHGtPqUrS6nRMmieVdDmyzYk4aSedgV3lfU5kJFv1ZyqdRi+DQj914OUfSaKcQBycGArvyEyNcTFsS0O2SrTZH0wxiC0Li1nWVDnEU0KHeaarVGl97Srh8RvyH25Hcqrje0wxdqxXWRXUx1ZbGSoLUhub7CeGvs6Dj638UHIthqyl7vVnUJobxfnJXP92kVQIDAQAB",
    "manifest_version": 3,
    "name": "Web Aliases",
-   "permissions": [ "storage", "declarativeNetRequest" ],
+  "permissions": [ "storage", "declarativeNetRequest", "tabs" ],
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "1.0"
+   "version": "1.1"
 }

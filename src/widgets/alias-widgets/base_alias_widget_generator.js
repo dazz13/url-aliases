@@ -6,9 +6,9 @@ export default class BaseAliasWidgetGenerator {
 
     constructor() {}
 
-    create() {
+    async create() {
         let widget = this.create_widget()
-        widget.appendChild(this.create_content())
+        widget.appendChild(await this.create_content())
         this.append(widget)
         this.autofocus()
     }
@@ -25,7 +25,7 @@ export default class BaseAliasWidgetGenerator {
         alias_collection.prepend(alias_content)
     }
 
-    create_content(){
+    async create_content(){
         throw new Error("Implement method")
     }
 
