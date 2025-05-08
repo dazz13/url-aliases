@@ -81,7 +81,16 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     let element = Widget.create_input();
     element.classList.add("alias");
     element.setAttribute("id", this.constructor.WIDGET_AUTOFOCUS_FIELD);
-    element.setAttribute("placeholder","alias");
+    element.setAttribute("placeholder", "alias");
+
+    // Add event listener for Enter key
+    element.addEventListener("keydown", (event) => {
+      console.log('event', event.key);
+      if (event.key === "Enter") {
+        this.add_button_action(event);
+      }
+    });
+
     return element;
   }
 
