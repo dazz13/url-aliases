@@ -1,0 +1,41 @@
+export default class UrlGenerator {
+    static SEARCH_PREFIX = "https://www.google.com/search?q=";
+    static INVALID_URL_MESSAGE = "Not a valid URL: converting input to a search instead";
+
+  /* Adding a new url will prefix with https. */
+  static generate(url) {
+    console.log('url', url);
+    console.log(typeof url);
+    console.log('url_generator generate ' + url);
+    if (url.indexOf(' ') != -1) {
+      return UrlGenerator.convert_to_search(url);
+    }
+    try {
+      let url_orig = url;
+      new URL(url_orig);
+      return url_orig;
+    } catch (error) {
+      console.log("Try to prepend https");
+    }
+    try {
+      let url_new = "https://" + url;
+      new URL(url_new);
+      return url_new;
+    } catch(error) {
+      console.log(UrlGenerator.INVALID_URL_MESSAGE);
+    }
+    return UrlGenerator.convert_to_search(url);
+  }
+
+  static convert_to_search(text) {
+    return UrlGenerator.SEARCH_PREFIX + text.replace(" ", "+");
+  }
+
+  static encode(text) {
+    return text.replace(" ", "+")
+  }
+
+  static decode(text) {
+    return text.replace("+", " ")
+  }
+}
