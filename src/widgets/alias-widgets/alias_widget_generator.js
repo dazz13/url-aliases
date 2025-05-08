@@ -34,7 +34,7 @@ export default class AliasWidgetGenerator extends BaseAliasWidgetGenerator {
     widget_content.appendChild(this.add_alias_value(alias.name));
     console.log('type', typeof alias.url);
     widget_content.appendChild(this.add_url_value(alias.url.replace(/^(https?:\/\/)/, '')));
-    return widget_content;
+    return widget_content; /* hey */
   }
 
   create_delete_button() {
