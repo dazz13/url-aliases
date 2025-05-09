@@ -4,16 +4,19 @@ export default class UrlGenerator {
 
   /* Adding a new url will prefix with https. */
   static generate(url) {
-    console.log('url', url);
-    console.log(typeof url);
-    console.log('url_generator generate ' + url);
+    if (url.startsWith("chrome://")) {
+      console.log('returning chrome url:', url);
+      return url; // Allow chrome:// URLs as-is
+    }
     if (url.indexOf(' ') != -1) {
-      return UrlGenerator.convert_to_search(url);
+      const search_url = UrlGenerator.convert_to_search(url);
+      console.log('search url constructed:', search_url);
+      return search_url;
     }
     try {
       let url_orig = url;
-      console.log(url_orig, 'worked!');
       new URL(url_orig);
+      console.log(url_orig, ' is a URL');
       return url_orig;
     } catch (error) {
       console.log("Try to prepend https");

@@ -55,7 +55,6 @@ export default class AliasController {
     return aliases;
   }
 
-
   async get_alias_rules() {
     let alias_rules = await chrome.declarativeNetRequest.getDynamicRules();
     return alias_rules;

@@ -18,7 +18,6 @@ async function active_url() {
   const tabs = await query_tabs({ active: true, currentWindow: true });
   if (tabs && tabs.length > 0) {
     const current_url = tabs[0].url;
-    console.log(current_url);
     return current_url;
   } else {
     console.log('tabs test failed.');
@@ -35,27 +34,14 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     this.controller = alias_controller;
     this.alias_widget_generator = alias_widget_generator;
     this.add_button_action = this.add_button_action.bind(this);
-    this.delete_button_action = this.delete_button_action.bind(this);
   }
 
   async create_content() {
     let widget_content = Widget.create_form()
-    widget_content.appendChild(this.create_delete_button());
     widget_content.appendChild(this.create_alias_field());
     widget_content.appendChild(await this.create_url_field());
     widget_content.appendChild(this.create_add_button());
     return widget_content;
-  }
-
-  create_delete_button() {
-    let delete_button = Widget.create_button();
-    delete_button.innerText = "x";
-    delete_button.addEventListener("click", this.delete_button_action);
-    return delete_button;
-  }
-
-  delete_button_action(event){
-    this.remove_widget(event);
   }
 
   create_add_button() {
@@ -72,9 +58,12 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
       "alias": widget.querySelector(".alias").value,
       "url": widget.querySelector(".url").value,
     }
-    this.remove_widget(event);
     let alias = await this.controller.create_alias(values);
     this.alias_widget_generator.create(alias);
+    widget.querySelector(".alias").value = '';
+    widget.querySelector(".url").value = '';
+    console.log('focus', widget.querySelector(".url"));
+    widget.querySelector(".alias").focus();
   }
 
   create_alias_field() {
@@ -85,10 +74,12 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
 
     // Add event listener for Enter key
     element.addEventListener("keydown", (event) => {
-      console.log('event', event.key);
       if (event.key === "Enter") {
         this.add_button_action(event);
       }
+    });
+    element.addEventListener("focus", (event) => {
+      element.select();
     });
 
     return element;
@@ -100,6 +91,9 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     element.setAttribute("placeholder","url");
     element.value = await active_url();
     Widget.add_submission_event(element, this.add_button_action);
+    element.addEventListener("focus", (event) => {
+      element.select();
+    });
     return element;
   }
 }

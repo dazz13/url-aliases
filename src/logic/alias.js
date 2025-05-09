@@ -4,7 +4,6 @@ export default class Alias {
     constructor(id, alias, url) {
         this.id = id;
         this.name = alias;
-        console.log(alias);
         this.url = UrlGenerator.generate(url);
     }
 
