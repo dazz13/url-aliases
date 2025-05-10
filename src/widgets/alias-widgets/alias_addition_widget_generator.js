@@ -35,14 +35,20 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     this.controller = alias_controller;
     this.alias_widget_generator = alias_widget_generator;
     this.add_button_action = this.add_button_action.bind(this);
+    this.table = Widget.create_table();
+  }
+
+  async create() {
+    await this.create_content()
   }
 
   async create_content() {
-    let widget_content = Widget.create_form()
-    widget_content.appendChild(this.create_add_button());
-    widget_content.appendChild(this.create_alias_field());
-    widget_content.appendChild(await this.create_url_field());
-    return widget_content;
+    let tr = Widget.create_tr()
+    tr.appendChild(Widget.create_td(this.create_add_button()));
+    tr.appendChild(Widget.create_td(this.create_alias_field()));
+    tr.appendChild(Widget.create_td(await this.create_url_field()));
+    console.log('appending', tr);
+    this.alias_widget_generator.table.appendChild(tr);
   }
 
   create_add_button() {
@@ -55,6 +61,9 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
   async add_button_action(event){
     let element = event.target;
     let widget = element.parentNode;
+    widget = widget.parentNode;
+    console.log(widget.querySelector(".alias").value);
+    console.log(widget.querySelector(".url").value);
     let values = {
       "alias": widget.querySelector(".alias").value,
       "url": widget.querySelector(".url").value,

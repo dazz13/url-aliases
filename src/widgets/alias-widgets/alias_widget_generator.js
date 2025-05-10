@@ -9,14 +9,14 @@ export default class AliasWidgetGenerator extends BaseAliasWidgetGenerator {
 
   constructor(alias_controller){
     super();
+    this.table = Widget.create_table();
+    this.table.classList.add(AliasWidgetGenerator.ALIAS_WIDGET_TABLE_CLASS);
     this.controller = alias_controller;
     this.delete_button_action = this.delete_button_action.bind(this);
   }
 
   async create_existing_aliases() {
     let aliases = await this.controller.get_aliases();
-    this.table = Widget.create_table();
-    this.table.classList.add(AliasWidgetGenerator.ALIAS_WIDGET_TABLE_CLASS);
     this.append(this.table);
     for (let alias of aliases) {
       await this.create(alias);
@@ -31,6 +31,15 @@ export default class AliasWidgetGenerator extends BaseAliasWidgetGenerator {
     }
     row.delete_button_action = this.delete_button_action.bind(this);
     this.table.appendChild(row);
+  }
+
+  add_initial_row_from_three_elements(elements) {
+    let row = Widget.create_tr();
+    for (let ele of elements) {
+      row.appendChild(ele);
+    }
+    this.table.insertBefore(row, this.table.firstChild);
+    return row;
   }
 
   get_alias_widget_elements(alias) {
