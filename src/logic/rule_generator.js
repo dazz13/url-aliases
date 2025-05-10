@@ -8,7 +8,6 @@ export default class RuleGenerator {
 
   static generate(alias) {
     let url_filter = RuleGenerator.create_rule_condition(alias.name);
-    console.log('rule_generator.js: url', alias.url);
     let rule =  {
       "id": alias.id,
       "priority": 1,

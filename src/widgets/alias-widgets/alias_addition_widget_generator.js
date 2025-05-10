@@ -18,7 +18,6 @@ async function active_url() {
   const tabs = await query_tabs({ active: true, currentWindow: true });
   if (tabs && tabs.length > 0) {
     const current_url = tabs[0].url;
-    console.log('url of this tab', current_url);
     return current_url;
   } else {
     console.log('tabs test failed.');
@@ -47,7 +46,6 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     tr.appendChild(Widget.create_td(this.create_add_button()));
     tr.appendChild(Widget.create_td(this.create_alias_field()));
     tr.appendChild(Widget.create_td(await this.create_url_field()));
-    console.log('appending', tr);
     this.alias_widget_generator.table.appendChild(tr);
   }
 
@@ -62,8 +60,6 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     let element = event.target;
     let widget = element.parentNode;
     widget = widget.parentNode;
-    console.log(widget.querySelector(".alias").value);
-    console.log(widget.querySelector(".url").value);
     let values = {
       "alias": widget.querySelector(".alias").value,
       "url": widget.querySelector(".url").value,

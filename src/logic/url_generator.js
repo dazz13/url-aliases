@@ -5,32 +5,26 @@ export default class UrlGenerator {
   /* Adding a new url will prefix with https. */
   static generate(url) {
     if (url.startsWith("chrome://")) {
-      console.log('returning chrome url:', url);
       return url; // Allow chrome:// URLs as-is
     }
     if (url.indexOf(' ') != -1) {
       const search_url = UrlGenerator.convert_to_search(url);
-      console.log('search url constructed:', search_url);
       return search_url;
     }
     try {
       let url_orig = url;
       new URL(url_orig);
-      console.log(url_orig, ' is a URL');
       return url_orig;
     } catch (error) {
-      console.log("Try to prepend https");
     }
     try {
       let url_new = "https://" + url;
       new URL(url_new);
-      console.log(url_new, 'worked!');
       return url_new;
     } catch(error) {
       console.log(UrlGenerator.INVALID_URL_MESSAGE);
     }
     let url_ret = UrlGenerator.convert_to_search(url);
-    console.log('Returning search: ' + url_ret);
     return url_ret;
   }
 
