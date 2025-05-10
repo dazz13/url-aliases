@@ -5,6 +5,7 @@ export default class AliasWidgetGenerator extends BaseAliasWidgetGenerator {
   static WIDGET_ID = "alias-widget"
   static WIDGET_HOLDER = "alias-collection"
   static ALIAS_ID = "alias-id-value"
+  static ALIAS_WIDGET_TABLE_CLASS = "alias-table-class"
 
   constructor(alias_controller){
     super();
@@ -13,54 +14,58 @@ export default class AliasWidgetGenerator extends BaseAliasWidgetGenerator {
   }
 
   async create_existing_aliases() {
-    let aliases = await
-    this.controller.get_aliases();
+    let aliases = await this.controller.get_aliases();
+    this.table = Widget.create_table();
+    this.table.classList.add(AliasWidgetGenerator.ALIAS_WIDGET_TABLE_CLASS);
+    this.append(this.table);
     for (let alias of aliases) {
-      this.create(alias);
+      await this.create(alias);
     }
   }
 
   async create(alias) {
-    let widget = this.create_widget();
-    widget.appendChild(await this.create_content(alias));
-    this.append(widget);
-    this.delete_button_action = this.delete_button_action.bind(this);
+    let row = Widget.create_tr();
+    row.setAttribute(AliasWidgetGenerator.ALIAS_ID, alias.id);
+    for (let ele of this.get_alias_widget_elements(alias)) {
+      row.appendChild(ele);
+    }
+    row.delete_button_action = this.delete_button_action.bind(this);
+    this.table.appendChild(row);
   }
 
-  async create_content(alias) {
-    let widget_content = Widget.create_form();
-    widget_content.appendChild(this.create_delete_button());
-    widget_content.setAttribute(AliasWidgetGenerator.ALIAS_ID, alias.id);
-    widget_content.appendChild(this.add_alias_value(alias.name));
-    widget_content.appendChild(this.add_url_value(alias.url.replace(/^(https?:\/\/)/, '')));
-    return widget_content;
+  get_alias_widget_elements(alias) {
+    let row_elements = [];
+    row_elements.push(this.create_delete_button());
+    row_elements.push(this.add_alias_value(alias.name));
+    row_elements.push(this.add_url_value(alias.url.replace(/^(https?:\/\/)/, '')));
+    return row_elements;
   }
 
   create_delete_button() {
     let delete_button = Widget.create_button();
     delete_button.innerText = "x";
     delete_button.addEventListener("click", this.delete_button_action);
-    return delete_button;
+    return Widget.create_td(delete_button);
   }
 
   async delete_button_action(event){
     let button = event.target;
-    let form = button.parentNode;
-    let widget = form.parentNode;
-    let id = parseInt(form.getAttribute(AliasWidgetGenerator.ALIAS_ID));
-    widget.remove();
+    let td = button.parentNode;
+    let row = td.parentNode;
+    let id = parseInt(row.getAttribute(AliasWidgetGenerator.ALIAS_ID));
+    row.remove();
     await this.controller.delete_alias(id);
   }
 
   add_alias_value(value) {
-    let element = Widget.create_value();
+    let element = Widget.create_td();
     element.classList.add("alias");
     element.innerText = value;
     return element;
   }
 
   add_url_value(value) {
-    let element = Widget.create_value();
+    let element = Widget.create_td();
     element.classList.add("url");
     element.innerText = value;
     return element;

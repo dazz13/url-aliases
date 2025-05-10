@@ -18,6 +18,7 @@ async function active_url() {
   const tabs = await query_tabs({ active: true, currentWindow: true });
   if (tabs && tabs.length > 0) {
     const current_url = tabs[0].url;
+    console.log('url of this tab', current_url);
     return current_url;
   } else {
     console.log('tabs test failed.');
@@ -38,16 +39,16 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
 
   async create_content() {
     let widget_content = Widget.create_form()
+    widget_content.appendChild(this.create_add_button());
     widget_content.appendChild(this.create_alias_field());
     widget_content.appendChild(await this.create_url_field());
-    widget_content.appendChild(this.create_add_button());
     return widget_content;
   }
 
   create_add_button() {
     let add_button = Widget.create_button();
     add_button.addEventListener("click", this.add_button_action);
-    add_button.innerText = "add";
+    add_button.innerText = "+";
     return add_button;
   }
 
@@ -62,7 +63,6 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     this.alias_widget_generator.create(alias);
     widget.querySelector(".alias").value = '';
     widget.querySelector(".url").value = '';
-    console.log('focus', widget.querySelector(".url"));
     widget.querySelector(".alias").focus();
   }
 

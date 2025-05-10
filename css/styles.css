@@ -2,6 +2,7 @@ body {
     display: block;
     min-width: 400px;
     text-align: left;
+    font-size: 14px;
 }
 
 .header {
@@ -11,21 +12,8 @@ body {
     text-align: center;
 }
 
-.instructions {
-    margin-left: 40px;
-}
-
-
-.instruction {
-    text-align: left;
-    color: grey;
-    font-size: 10px;
-    border-spacing: 10px;
-}
-
 .title {
     text-align: center;
-    padding: 2.5px 0px;
 }
 
 td {
@@ -35,9 +23,6 @@ td {
 .jumbotron {
     color: #000;
     background-color: #eee;
-    margin: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
 }
 
 a {
@@ -50,13 +35,6 @@ a:hover {
     text-decoration: none;
 }
 
-input[type=text] {
-    width: 100px;
-    border: #f0f0f0;
-    border-radius: 0px;
-    padding: 0px 0px
-}
-
 input[type=text]:focus {
     border: #f0f0f0;
     outline: #f0f0f0;
@@ -64,16 +42,25 @@ input[type=text]:focus {
 }
 
 .button {
+    /* padding: 0px 8px; */
+    background-color: white;
     border: none;
-    border-radius: 0px;
-    padding: 0px 8px;
-    background-color: #B0B0B0;
-    color: black;
+    color: red;
 }
 
 .button:hover {
     background-color: #ff5c5c;
     color: black;
+}
+
+.alias-table-class {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.alias-table-class td {
+    border: 1px solid #aaa;
+    padding: 0 5px;
 }
 
 .alias-widget {
@@ -89,12 +76,22 @@ input[type=text]:focus {
 }
 
 .field {
-    margin: 0 10px;
+    margin: 0;
 }
 
 .badge {
-    margin: 0 0px;
     color: black;
-    border-radius: 0;
-    border-right: 1px solid #ccc;
+}
+
+.alias {
+    width: 40px;
+    border: 1px solid #aaa;
+    padding: 0 3px;
+}
+
+.url {
+    white-space: nowrap;
+    width: 400px;
+    border: 1px solid #aaa;
+    padding: 0 3px;
 }
