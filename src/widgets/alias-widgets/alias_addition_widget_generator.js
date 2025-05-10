@@ -64,6 +64,10 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
       "alias": widget.querySelector(".alias").value,
       "url": widget.querySelector(".url").value,
     }
+    if (values.alias == '' || values.url == '') {
+      /* Make error visible to user. */
+      return;
+    }
     let alias = await this.controller.create_alias(values);
     this.alias_widget_generator.create(alias);
     widget.querySelector(".alias").value = '';
