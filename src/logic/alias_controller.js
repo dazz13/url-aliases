@@ -30,6 +30,7 @@ export default class AliasController {
 
   async add_alias(alias) {
     let rule = RuleGenerator.generate(alias);
+    console.log('adding rule', rule);
     await chrome.declarativeNetRequest.updateDynamicRules({addRules: [rule]});
   }
 

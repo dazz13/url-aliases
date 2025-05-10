@@ -11,7 +11,8 @@ function setup() {
 
   alias_addition_widget_generator.create();
   alias_widget_generator.create_existing_aliases();
-  $(document).ready(function () {
+  // Request animation frame in order to make sure this happens after DOM creation.
+  requestAnimationFrame(() => {
     alias_addition_widget_generator.focus();
   });
 }

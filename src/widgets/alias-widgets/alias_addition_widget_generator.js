@@ -51,7 +51,6 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
   }
 
   focus() {
-    /* This does not work. :-( */
     this.alias_field.focus();
   }
 

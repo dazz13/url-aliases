@@ -16,7 +16,7 @@ export default class IdTracker {
 
   async request_id() {
     let response = await chrome.storage.sync.get([this.id_key]);
-    return response[this.id_key] + 1;
+    return response[this.id_key];
   }
 
   async initialize_id() {
