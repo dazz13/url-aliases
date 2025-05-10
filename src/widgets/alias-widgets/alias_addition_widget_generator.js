@@ -43,10 +43,16 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
 
   async create_content() {
     let tr = Widget.create_tr()
+    this.alias_field = this.create_alias_field();
     tr.appendChild(Widget.create_td(this.create_add_button()));
-    tr.appendChild(Widget.create_td(this.create_alias_field()));
+    tr.appendChild(Widget.create_td(this.alias_field));
     tr.appendChild(Widget.create_td(await this.create_url_field()));
     this.alias_widget_generator.table.appendChild(tr);
+  }
+
+  focus() {
+    console.log('focussing on alias field');
+    this.alias_field.focus();
   }
 
   create_add_button() {
@@ -78,7 +84,7 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
   create_alias_field() {
     let element = Widget.create_input();
     element.classList.add("alias");
-    element.setAttribute("id", this.constructor.WIDGET_AUTOFOCUS_FIELD);
+    /* element.setAttribute("id", this.constructor.WIDGET_AUTOFOCUS_FIELD); */
     element.setAttribute("placeholder", "alias");
 
     // Add event listener for Enter key
@@ -87,10 +93,12 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
         this.add_button_action(event);
       }
     });
+
     element.addEventListener("focus", (event) => {
       element.select();
     });
 
+    element.focus();
     return element;
   }
 

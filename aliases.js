@@ -11,6 +11,7 @@ function setup() {
 
   alias_addition_widget_generator.create();
   alias_widget_generator.create_existing_aliases();
+  alias_addition_widget_generator.focus();
 }
 
 window.onload = setup
