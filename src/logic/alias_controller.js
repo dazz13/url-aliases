@@ -20,6 +20,7 @@ export default class AliasController {
   /* Only used with the add alias button. */
   async create_alias(values) {
     let id = await this.id_tracker.get_id();
+    console.log('got id', id);
     values["id"] = id;
     let alias = Alias.create(values);
     await this.add_alias(alias);
