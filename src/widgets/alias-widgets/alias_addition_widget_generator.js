@@ -51,7 +51,7 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
   }
 
   focus() {
-    console.log('focussing on alias field');
+    /* This does not work. :-( */
     this.alias_field.focus();
   }
 
@@ -84,7 +84,7 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
   create_alias_field() {
     let element = Widget.create_input();
     element.classList.add("alias");
-    /* element.setAttribute("id", this.constructor.WIDGET_AUTOFOCUS_FIELD); */
+    element.setAttribute("id", this.constructor.WIDGET_AUTOFOCUS_FIELD);
     element.setAttribute("placeholder", "alias");
 
     // Add event listener for Enter key
