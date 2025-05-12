@@ -1,8 +1,9 @@
 body {
     display: block;
-    min-width: 400px;
+    width: 550px;
     text-align: left;
     font-size: 13px;
+    margin: 0;
 }
 
 .title {
@@ -33,7 +34,7 @@ input[type=text]:focus {
     color: black;
 }
 
-.alias-table-class {
+table {
     border-collapse: collapse;
     width: 100%;
 }
@@ -41,6 +42,19 @@ input[type=text]:focus {
 .alias-table-class td {
     border: 1px solid #ddd;
     padding: 0;
+}
+
+input.url {
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+td.url {
+  max-width: 440px;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 td.url, td.alias, td .alias, td .url {
