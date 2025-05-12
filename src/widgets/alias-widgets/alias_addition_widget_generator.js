@@ -2,28 +2,6 @@ import Widget from "/src/widgets/widget.js";
 import BaseAliasWidgetGenerator from "/src/widgets/alias-widgets/base_alias_widget_generator.js";
 import Alias from "/src/logic/alias.js";
 
-function query_tabs(queryInfo) {
-  return new Promise((resolve, reject) => {
-    chrome.tabs.query(queryInfo, (tabs) => {
-      // Check for errors returned by the Chrome API
-      if (chrome.runtime.lastError) {
-        return reject(chrome.runtime.lastError);
-      }
-      resolve(tabs);
-    });
-  });
-}
-
-async function active_url() {
-  const tabs = await query_tabs({ active: true, currentWindow: true });
-  if (tabs && tabs.length > 0) {
-    const current_url = tabs[0].url;
-    return current_url;
-  } else {
-    console.log("tabs test failed.");
-  }
-}
-
 export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerator {
   static WIDGET_ID = "alias-addition-widget";
   static WIDGET_HOLDER = "alias-addition";
@@ -57,6 +35,28 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
 
   focus() {
     this.alias_field.focus();
+  }
+
+  query_tabs(queryInfo) {
+    return new Promise((resolve, reject) => {
+      chrome.tabs.query(queryInfo, (tabs) => {
+        // Check for errors returned by the Chrome API
+        if (chrome.runtime.lastError) {
+          return reject(chrome.runtime.lastError);
+        }
+        resolve(tabs);
+      });
+    });
+  }
+
+  async active_url() {
+    const tabs = await this.query_tabs({ active: true, currentWindow: true });
+    if (tabs && tabs.length > 0) {
+      const current_url = tabs[0].url;
+      return current_url;
+    } else {
+      console.log("tabs test failed.");
+    }
   }
 
   create_add_button() {
@@ -155,7 +155,7 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     let element = Widget.create_input();
     element.classList.add("url");
     element.setAttribute("placeholder", "url");
-    element.value = await active_url();
+    element.value = await this.active_url();
     Widget.add_submission_event(element, this.add_button_action);
 
     element.addEventListener("focus", (event) => {
