@@ -1,6 +1,6 @@
 {
   "name": "url-aliases",
-  "version": "1.0.0",
+  "version": "1.1",
   "description": "URL Aliases is a Chrome extension that allows users to create aliases (short strings) for websites so that they don't have to type long URLs for websites they visit often. If there is an autocomplete, users need to type a space after the shortcut to avoid it.",
   "main": "popup.html",
   "scripts": {
@@ -9,7 +9,6 @@
   "author": "https://github.com/dazz13/url-aliases",
   "license": "ISC",
   "dependencies": {
-    "bootstrap": "^5.2.3",
     "jquery": "^3.6.4"
   }
 }
