@@ -1,6 +1,6 @@
 {
   "action": {
-    "default_popup": "aliases.html"
+    "default_popup": "popup.html"
   },
   "commands": {
     "_execute_action": {

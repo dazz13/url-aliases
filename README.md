@@ -14,3 +14,5 @@ easily edit the URL; just tab over to it.
 
 For short aliases such as a single letter, Chrome will of course offer an
 autocomplete. To use the alias, just type a space to clear the autocomplete.
+
+The code is available on [github](https://github.com/dazz13/url-aliases).
