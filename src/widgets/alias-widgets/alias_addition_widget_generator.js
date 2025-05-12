@@ -23,8 +23,12 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
   async create_content() {
     let tr = Widget.create_tr();
     this.alias_field = this.create_alias_field();
-    tr.appendChild(Widget.create_td(this.create_add_button()));
-    tr.appendChild(Widget.create_td(this.alias_field));
+    let add_button_td = Widget.create_td(this.create_add_button());
+    let alias_td = Widget.create_td(this.alias_field);
+    add_button_td.style.width = "23px";
+    alias_td.style.width = "28px";
+    tr.appendChild(add_button_td);
+    tr.appendChild(alias_td);
     tr.appendChild(Widget.create_td(await this.create_url_field()));
     this.alias_widget_generator.table.appendChild(tr);
 
@@ -69,19 +73,6 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
   create_error_overlay() {
     const overlay = document.createElement("div");
     overlay.classList.add("error-overlay");
-    overlay.style.position = "absolute";
-    overlay.style.top = "0";
-    overlay.style.left = "0";
-    overlay.style.width = "100%";
-    overlay.style.height = "100%";
-    overlay.style.backgroundColor = "rgba(255, 0, 0, 0.8)";
-    overlay.style.color = "white";
-    overlay.style.display = "none"; // Initially hidden
-    overlay.style.alignItems = "center";
-    overlay.style.justifyContent = "center";
-    overlay.style.zIndex = "1000";
-    overlay.style.textAlign = "center";
-    overlay.style.fontSize = "1.2em";
     return overlay;
   }
 
@@ -93,11 +84,21 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     let aliasField = widget.querySelector(".alias");
 
     const values = {
-      alias: aliasField.value,
-      url: urlField.value,
+      alias: aliasField.value.trim(),
+      url: urlField.value.trim(),
     };
 
     // Validate URL
+    if (values.alias.length == 0) {
+      this.show_overlay_error("No alias entered.");
+      return;
+    }
+
+    if (values.url.length == 0) {
+      this.show_overlay_error("No URL entered.");
+      return;
+    }
+
     if (values.url.startsWith("chrome://")) {
       this.show_overlay_error("URLs starting with 'chrome://' are not allowed.");
       return;
