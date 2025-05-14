@@ -77,10 +77,17 @@ export default class AliasWidgetGenerator extends BaseAliasWidgetGenerator {
     return element;
   }
 
+  maybe_add_protocol(url) {
+    return url.includes("://") ? url : "https://" + url;
+  }
+
   add_url_value(value) {
     let element = Widget.create_td();
     element.classList.add("url");
     element.innerText = value;
+    element.addEventListener("click", (event) => {
+      chrome.tabs.update({ url: this.maybe_add_protocol(value) });
+    });
     return element;
   }
 }

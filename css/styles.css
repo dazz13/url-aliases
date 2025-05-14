@@ -92,6 +92,14 @@ td.url, td.alias, td .alias, td .url {
     border: none;
 }
 
+td.url {
+    cursor: pointer;
+}
+
+td.url:hover {
+    background-color: #eee;
+}
+
 .error-overlay {
     position: absolute;
     top: 0;

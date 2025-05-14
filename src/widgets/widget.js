@@ -7,6 +7,16 @@ export default class Widget {
     return document.createElement("tr");
   }
 
+  static create_a(text, url) {
+    let a = document.createElement("a");
+    const link_text = document.createTextNode(text);
+    a.href = url ?
+      (url.includes("://") ? url : "https://" + url) :
+      (text.includes("://") ? text : "https://" + text);
+    a.appendChild(link_text);
+    return a;
+  }
+
   static create_td(inner_element) {
     let element = document.createElement("td");
     if (inner_element) {
