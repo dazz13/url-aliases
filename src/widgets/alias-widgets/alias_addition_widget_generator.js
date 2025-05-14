@@ -14,6 +14,7 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     this.add_button_action = this.add_button_action.bind(this);
     this.hide_overlay_error = this.hide_overlay_error.bind(this);
     this.table = Widget.create_table();
+    this.update_aliases();
   }
 
   async create() {
@@ -41,6 +42,10 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     this.alias_field.focus();
   }
 
+  async update_aliases() {
+    this.aliases = await this.controller.get_aliases();
+  }
+
   query_tabs(queryInfo) {
     return new Promise((resolve, reject) => {
       chrome.tabs.query(queryInfo, (tabs) => {
@@ -53,6 +58,14 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     });
   }
 
+  add_duplicate_styling() {
+    this.alias_field.classList.add('duplicate');
+  }
+
+  remove_duplicate_styling() {
+    this.alias_field.classList.remove('duplicate');
+  }
+
   async active_url() {
     const tabs = await this.query_tabs({ active: true, currentWindow: true });
     if (tabs && tabs.length > 0) {
@@ -61,6 +74,7 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     } else {
       console.log("tabs test failed.");
     }
+    return "";
   }
 
   create_add_button() {
@@ -105,11 +119,16 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     }
 
     if (values.alias == "" || values.url == "") {
-      /* Make error visible to user. */
+      // No error visible to user.
+      return;
+    }
+
+    if (this.is_alias_duplicate(values.alias)) {
       return;
     }
 
     let alias = await this.controller.create_alias(values);
+    this.update_aliases();
     this.alias_widget_generator.create(alias);
 
     aliasField.value = "";
@@ -142,6 +161,13 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
         this.add_button_action(event);
       }
     });
+    element.addEventListener("keyup", (event) => {
+      if (this.is_alias_duplicate(element.value)) {
+        this.add_duplicate_styling();
+      } else {
+        this.remove_duplicate_styling();
+      }
+    });
 
     element.addEventListener("focus", (event) => {
       this.hide_overlay_error(); // Clear error when alias field is focused.
@@ -150,6 +176,14 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
 
     element.focus();
     return element;
+  }
+
+  is_alias_duplicate(value) {
+    let aliases = this.aliases.map(alias => alias.name);
+    for (let alias of aliases) {
+      if (alias == value) return true;
+    }
+    return false;
   }
 
   async create_url_field() {

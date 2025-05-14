@@ -30,7 +30,11 @@ export default class AliasWidgetGenerator extends BaseAliasWidgetGenerator {
       row.appendChild(ele);
     }
     row.delete_button_action = this.delete_button_action.bind(this);
-    this.table.appendChild(row);
+    if (this.table.rows.length > 1) {
+      this.table.insertBefore(row, this.table.rows[1]);
+    } else {
+      this.table.appendChild(row);
+    }
   }
 
   add_initial_row_from_three_elements(elements) {

@@ -107,3 +107,8 @@ td.url, td.alias, td .alias, td .url {
     text-align: center;
     font-size: 1.2;
 }
+
+.duplicate {
+    color: red;
+    background-color: rgba(255, 0, 0, 0.5);
+}
