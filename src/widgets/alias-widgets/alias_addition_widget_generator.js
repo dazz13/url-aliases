@@ -14,7 +14,6 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     this.add_button_action = this.add_button_action.bind(this);
     this.hide_overlay_error = this.hide_overlay_error.bind(this);
     this.table = Widget.create_table();
-    this.update_aliases();
   }
 
   async create() {
@@ -22,59 +21,32 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
   }
 
   async create_content() {
+    const table = this.alias_widget_generator.table;
     let tr = Widget.create_tr();
     this.alias_field = this.create_alias_field();
     let add_button_td = Widget.create_td(this.create_add_button());
     let alias_td = Widget.create_td(this.alias_field);
-    add_button_td.style.width = "23px";
-    alias_td.style.width = "28px";
+    add_button_td.classList.add("add-button-td");
+    alias_td.classList.add("alias-td");
     tr.appendChild(add_button_td);
     tr.appendChild(alias_td);
     tr.appendChild(Widget.create_td(await this.create_url_field()));
-    this.alias_widget_generator.table.appendChild(tr);
 
+    // Add row as first row of table.
+    if (table.rows.length == 0) {
+      table.appendChild(tr);
+    } else {
+      table.insertBefore(tr, table.rows[0]);
+    }
     // Add an overlay for error messages
     this.error_overlay = this.create_error_overlay();
-    tr.appendChild(this.error_overlay);
+    const table_parent = table.parentElement;
+    table_parent.insertBefore(
+      tr.appendChild(this.error_overlay), table_parent.firstChild);
   }
 
   focus() {
     this.alias_field.focus();
-  }
-
-  async update_aliases() {
-    this.aliases = await this.controller.get_aliases();
-  }
-
-  query_tabs(queryInfo) {
-    return new Promise((resolve, reject) => {
-      chrome.tabs.query(queryInfo, (tabs) => {
-        // Check for errors returned by the Chrome API
-        if (chrome.runtime.lastError) {
-          return reject(chrome.runtime.lastError);
-        }
-        resolve(tabs);
-      });
-    });
-  }
-
-  add_duplicate_styling() {
-    this.alias_field.classList.add('duplicate');
-  }
-
-  remove_duplicate_styling() {
-    this.alias_field.classList.remove('duplicate');
-  }
-
-  async active_url() {
-    const tabs = await this.query_tabs({ active: true, currentWindow: true });
-    if (tabs && tabs.length > 0) {
-      const current_url = tabs[0].url;
-      return current_url;
-    } else {
-      console.log("tabs test failed.");
-    }
-    return "";
   }
 
   create_add_button() {
@@ -123,13 +95,19 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
       return;
     }
 
-    if (this.is_alias_duplicate(values.alias)) {
+    if (await this.is_alias_duplicate(values.alias)) {
+      // User sees duplicate via styling.
+      return;
+    }
+
+    let name = await this.get_name_for_url(values.url);
+    if (name) {
+      this.show_overlay_error(`The URL already has an alias: ${name}.`);
       return;
     }
 
     let alias = await this.controller.create_alias(values);
-    this.update_aliases();
-    this.alias_widget_generator.create(alias);
+    this.alias_widget_generator.create(alias, 1);
 
     aliasField.value = "";
     urlField.value = "";
@@ -141,7 +119,7 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     this.error_overlay.style.display = "flex";
 
     // Hide the overlay after 3 seconds
-    setTimeout(this.hide_overlay_error, 3000);
+    setTimeout(this.hide_overlay_error, 2500);
   }
 
   hide_overlay_error() {
@@ -161,16 +139,16 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
         this.add_button_action(event);
       }
     });
-    element.addEventListener("keyup", (event) => {
-      if (this.is_alias_duplicate(element.value)) {
-        this.add_duplicate_styling();
+    element.addEventListener("keyup", async (event) => {
+      let dup = await this.is_alias_duplicate(element.value);
+      if (dup) {
+        this.alias_field.classList.add('duplicate');
       } else {
-        this.remove_duplicate_styling();
+        this.alias_field.classList.remove('duplicate');
       }
     });
 
     element.addEventListener("focus", (event) => {
-      this.hide_overlay_error(); // Clear error when alias field is focused.
       element.select();
     });
 
@@ -178,26 +156,50 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     return element;
   }
 
-  is_alias_duplicate(value) {
-    let aliases = this.aliases.map(alias => alias.name);
+  async create_url_field() {
+    let element = Widget.create_input();
+    element.classList.add("url");
+    element.setAttribute("placeholder", "url");
+    let controller_aliases = await this.controller.get_aliases();
+    let urls = controller_aliases.map(alias => alias.url);
+    let current_url = await this.controller.active_url();
+    if (urls.includes(current_url)) {
+      element.value = "";
+    } else {
+      element.value = current_url;
+    }
+    Widget.add_submission_event(element, this.add_button_action);
+
+    element.addEventListener("focus", (event) => {
+      element.select();
+    });
+
+    return element;
+  }
+
+  async is_alias_duplicate(value) {
+    let controller_aliases = await this.controller.get_aliases();
+    let aliases = controller_aliases.map(alias => alias.name);
     for (let alias of aliases) {
       if (alias == value) return true;
     }
     return false;
   }
 
-  async create_url_field() {
-    let element = Widget.create_input();
-    element.classList.add("url");
-    element.setAttribute("placeholder", "url");
-    element.value = await this.active_url();
-    Widget.add_submission_event(element, this.add_button_action);
+   escape_reg_exp(s) {
+     return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+   }
 
-    element.addEventListener("focus", (event) => {
-      this.hide_overlay_error(); // Clear error when URL field is focused.
-      element.select();
-    });
-
-    return element;
+  async get_name_for_url(value) {
+    const url = this.controller.maybe_remove_http(value);
+    const aliases = await this.controller.get_aliases();
+    const url_regex = new RegExp(
+      "^(http://|https://)?" + this.escape_reg_exp(url) + "/?$");
+    for (let alias of aliases) {
+      if (alias.url.match(url_regex)) {
+        return alias.name;
+      }
+    }
+    return null;
   }
 }

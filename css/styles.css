@@ -30,6 +30,14 @@ input[type=text]:focus {
     color: red;
 }
 
+.add-button-td {
+    width: 23px;
+}
+
+.alias-td {
+    width: 28px;
+}
+
 .button:hover {
     background-color: #ff5c5c;
     color: black;
@@ -116,7 +124,8 @@ td.url:hover {
     font-size: 1.2;
 }
 
-.duplicate {
+.duplicate,
+.url-in-list-matches-current-url {
     color: red;
     background-color: rgba(255, 0, 0, 0.5);
 }

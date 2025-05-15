@@ -7,7 +7,7 @@ export default class AliasController {
   static ID_KEY = "ALIAS";
 
   static get_instance(){
-    if (AliasController.instance == null){
+    if (AliasController.instance == null) {
       AliasController.instance = new AliasController();
     }
     return AliasController.instance;
@@ -70,5 +70,36 @@ export default class AliasController {
   async update_alias(alias) {
     await this.delete_alias(alias.id)
     await this.add_alias(alias)
+  }
+
+  query_tabs(queryInfo) {
+    return new Promise((resolve, reject) => {
+      chrome.tabs.query(queryInfo, (tabs) => {
+        // Check for errors returned by the Chrome API
+        if (chrome.runtime.lastError) {
+          return reject(chrome.runtime.lastError);
+        }
+        resolve(tabs);
+      });
+    });
+  }
+
+  async active_url() {
+    const tabs = await this.query_tabs({ active: true, currentWindow: true });
+    if (tabs && tabs.length > 0) {
+      const current_url = tabs[0].url;
+      return current_url;
+    } else {
+     console.log("tabs test failed.");
+    }
+    return "";
+  }
+
+  maybe_add_protocol(url) {
+    return url.includes("://") ? url : "https://" + url;
+  }
+
+  maybe_remove_http(url) {
+    return url.replace(/^(http|https):\/\//, '');
   }
 }
