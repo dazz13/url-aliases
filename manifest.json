@@ -20,5 +20,5 @@
   "manifest_version": 3,
   "name": "URL Aliases",
   "permissions": [ "declarativeNetRequest", "tabs" ],
-  "version": "1.3"
+  "version": "1.4"
 }
