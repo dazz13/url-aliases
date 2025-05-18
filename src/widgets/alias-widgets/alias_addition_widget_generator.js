@@ -18,12 +18,22 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     this.table = alias_widget_generator.table;
   }
 
+  focus_event(event) {
+    const { widget } = event.detail;
+    if (widget == "add") {
+      requestAnimationFrame(() => {
+        this.alias_field.focus();
+      });
+    }
+  }
+
   show_or_hide_filter(event) {
     const { show_filter } = event.detail;
     if (show_filter) {
       this.tr.style.display = "none";
     } else {
       this.tr.style.display = "";
+      this.alias_field.focus();
     }
   }
 
@@ -73,6 +83,8 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
     // Add an overlay for error messages
     this.error_overlay = this.create_error_overlay();
     document.body.insertBefore(this.error_overlay, document.body.firstChild);
+    document.dispatchEvent(new CustomEvent(
+      "showOrHideFilter", { detail: { show_filter: false } }));
   }
 
   focus() {
@@ -171,9 +183,8 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
       this.set_or_unset_styles();
       if (event.key == "/") {
         this.alias_field.value = this.alias_field.value.replace("/", "");
-        const show_or_hide_filter_event = new CustomEvent(
-          "showOrHideFilter", { detail: { show_filter: true } });
-        document.dispatchEvent(show_or_hide_filter_event);
+        document.dispatchEvent(new CustomEvent(
+          "showOrHideFilter", { detail: { show_filter: true } }));
         document.dispatchEvent(new CustomEvent(
           "customFocus", { detail: { widget: "filter" } }));
       }
@@ -219,7 +230,8 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
   }
 
   get_row_with_alias(alias) {
-    for (let row of this.table.rows) {
+    let rows = Array.from(this.table.rows).slice(2);
+    for (let row of rows) {
       if (this.row_has_alias(row, alias.trim())) {
         return row;
       }
@@ -237,7 +249,8 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
 
   get_row_with_url(value) {
     const url = this.controller.maybe_remove_http(value.trim());
-    for (let row of this.table.rows) {
+    let rows = Array.from(this.table.rows).slice(2);
+    for (let row of rows) {
       if (this.row_has_url(row, url)) {
         return row;
       }

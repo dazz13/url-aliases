@@ -13,6 +13,7 @@ export default class AliasFilterWidgetGenerator extends BaseAliasWidgetGenerator
     this.controller = alias_controller;
     this.alias_widget_generator = alias_widget_generator;
     this.table = alias_widget_generator.table;
+    this.do_filter = this.do_filter.bind(this);
   }
 
   async create() {
@@ -26,8 +27,10 @@ export default class AliasFilterWidgetGenerator extends BaseAliasWidgetGenerator
     const { show_filter } = event.detail;
     if (show_filter) {
       this.tr.style.display = "";
+      this.do_filter();
     } else {
       this.tr.style.display = "none";
+      this.show_all_rows();
     }
   }
 
@@ -61,6 +64,11 @@ export default class AliasFilterWidgetGenerator extends BaseAliasWidgetGenerator
     this.filter_field.focus();
   }
 
+  do_filter(event) {
+    const filter = this.filter_field.value.trim() || "";
+    this.filter_rows(filter);
+  }
+
   create_filter_field() {
     let element = Widget.create_input();
     element.classList.add("filter");
@@ -71,18 +79,16 @@ export default class AliasFilterWidgetGenerator extends BaseAliasWidgetGenerator
       element.select();
     });
 
-    element.addEventListener("keyup", (event) => {
+    element.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        let show_or_hide_filter_event = new CustomEvent(
-            "showOrHideFilter", { detail: { show_filter: false } });
-        document.dispatchEvent(show_or_hide_filter_event);
-        this.focus();
+        document.dispatchEvent(new CustomEvent(
+          "showOrHideFilter", { detail: { show_filter: false } }));
         return;
       }
-      const filter = this.filter_field.value.trim() || "";
-      this.filter_rows(filter);
     });
+
+    element.addEventListener("keyup", this.do_filter);
 
     element.focus();
     return element;
@@ -103,6 +109,13 @@ export default class AliasFilterWidgetGenerator extends BaseAliasWidgetGenerator
           row.style.display = "";
         }
       }
+    }
+  }
+
+  show_all_rows() {
+    let rows = Array.from(this.table.rows).slice(2);
+    for (let row of rows) {
+      row.style.display = "";
     }
   }
 
