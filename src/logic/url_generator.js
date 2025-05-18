@@ -7,7 +7,7 @@ export default class UrlGenerator {
     if (url.startsWith("chrome://")) {
       return url; // Allow chrome:// URLs as-is
     }
-    if (url.indexOf(' ') != -1) {
+    if (url.includes(" ") || url.match(/^\w+$/)) {
       const search_url = UrlGenerator.convert_to_search(url);
       return search_url;
     }
@@ -24,8 +24,8 @@ export default class UrlGenerator {
     } catch(error) {
       console.log(UrlGenerator.INVALID_URL_MESSAGE);
     }
-    let url_ret = UrlGenerator.convert_to_search(url);
-    return url_ret;
+    // Defaults to 'convert to search'.
+    return UrlGenerator.convert_to_search(url);
   }
 
   static convert_to_search(text) {

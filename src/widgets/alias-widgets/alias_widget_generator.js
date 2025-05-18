@@ -15,6 +15,13 @@ export default class AliasWidgetGenerator extends BaseAliasWidgetGenerator {
     this.delete_button_action = this.delete_button_action.bind(this);
   }
 
+  fire_reset_styles_event() {
+    const customEvent = new CustomEvent("stylesNeedReset", {
+      bubbles: true
+    });
+    document.dispatchEvent(customEvent);
+  }
+
   async create_existing_aliases() {
     let aliases = await this.controller.get_aliases();
     this.append(this.table);
@@ -23,7 +30,7 @@ export default class AliasWidgetGenerator extends BaseAliasWidgetGenerator {
     }
   }
 
-  async create(alias, insert_after_row = 1) {
+  async create(alias, insert_after_row = 2) {
     let row = Widget.create_tr();
     row.setAttribute(AliasWidgetGenerator.ALIAS_ID, alias.id);
     for (let ele of await this.get_alias_widget_elements(alias)) {
@@ -69,6 +76,7 @@ export default class AliasWidgetGenerator extends BaseAliasWidgetGenerator {
     let id = parseInt(row.getAttribute(AliasWidgetGenerator.ALIAS_ID));
     row.remove();
     await this.controller.delete_alias(id);
+    this.fire_reset_styles_event()
   }
 
   add_alias_value(value) {
@@ -89,6 +97,7 @@ export default class AliasWidgetGenerator extends BaseAliasWidgetGenerator {
     }
     element.addEventListener("click", (event) => {
       chrome.tabs.update({ url: url });
+      window.close();
     });
     return element;
   }

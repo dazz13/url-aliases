@@ -124,8 +124,17 @@ td.url:hover {
     font-size: 1.2;
 }
 
-.duplicate,
-.url-in-list-matches-current-url {
+.duplicate {
     color: red;
-    background-color: rgba(255, 0, 0, 0.5);
+    background-color: rgba(255, 0, 0, 0.2);
+}
+
+.matches-current-url {
+    font-weight: bold;
+    background-color: #eee;
+}
+
+.filter-td input {
+    width: 400px;
+    border: none;
 }
