@@ -2,6 +2,7 @@
   "action": {
     "default_popup": "popup.html"
   },
+  "options_page": "options.html",
   "commands": {
     "_execute_action": {
       "suggested_key": {
@@ -19,6 +20,6 @@
   },
   "manifest_version": 3,
   "name": "URL Aliases",
-  "permissions": [ "declarativeNetRequest", "tabs" ],
+  "permissions": [ "declarativeNetRequest", "tabs", "downloads" ],
   "version": "1.4"
 }

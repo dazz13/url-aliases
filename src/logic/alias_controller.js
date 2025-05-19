@@ -45,17 +45,16 @@ export default class AliasController {
   }
 
   async get_aliases() {
-    let rules = await this.get_alias_rules();
-    let aliases = [];
-    for (let rule of rules) {
+    const rules = await this.get_alias_rules();
+    const aliases = [];
+    for (const rule of rules) {
       aliases.push(RuleGenerator.rule_to_alias(rule));
     }
     return aliases;
   }
 
   async get_alias_rules() {
-    let alias_rules = await chrome.declarativeNetRequest.getDynamicRules();
-    return alias_rules;
+    return await chrome.declarativeNetRequest.getDynamicRules();
   }
 
   async get_alias_ids() {

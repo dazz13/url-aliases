@@ -17,11 +17,12 @@
   <h1>Import / Export Aliases</h1>
 
   <div id="exportImport">
-    <h2>Import/Export Aliases</h2>
     <button id="saveAliasesToFile">Save Aliases to File</button>
     <input type="file" id="loadAliasesFromFile">
+    <input type="checkbox" id="merge" name="merge">
+    <label for="merge" style="font-size: 11pt">Merge with existing (vs. replace)</label><br><br>
   </div>
 
-  <script src="options.js"></script>
+  <script src="options.js" type="module"></script>
 </body>
 </html>

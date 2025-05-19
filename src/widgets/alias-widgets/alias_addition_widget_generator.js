@@ -106,12 +106,12 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
 
   async add_button_action(event) {
     const values = {
-      alias: this.alias_field.value.trim(),
+      name: this.alias_field.value.trim(),
       url: this.url_field.value.trim(),
     };
 
     // Validate URL
-    if (values.alias.length == 0) {
+    if (values.name.length == 0) {
       this.show_overlay_error("No alias entered.");
       return;
     }
@@ -134,7 +134,7 @@ export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerat
       return;
     }
 
-    let alias_row = this.get_row_with_alias(values.alias);
+    let alias_row = this.get_row_with_alias(values.name);
     if (alias_row) {
       this.show_overlay_error("That alias is already assigned.");
       return;
