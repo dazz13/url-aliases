@@ -16,8 +16,10 @@ function setup() {
   alias_filter_widget_generator.create();
   alias_widget_generator.create_existing_aliases();
   // Request animation frame in order to make sure this happens after DOM creation.
-  requestAnimationFrame(() => {
-    alias_addition_widget_generator.focus();
+  setTimeout(() => {
+    requestAnimationFrame(() => {
+      alias_addition_widget_generator.focus();
+    }, 10);
   });
 }
 
