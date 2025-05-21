@@ -1,26 +1,127 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>URL Aliases</title>
+  <title>URL Aliases Options</title>
   <style>
     body {
-      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 30px;
+      background-color: #f0f2f5;
+      color: #333;
+      line-height: 1.6;
+      width: 550px;
+      font-size: 14px;
     }
-    #exportImport {
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      padding: 15px;
+
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.2em;
+      font-weight: 600;
+    }
+
+    .section-container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      padding: 30px;
+      margin-bottom: 25px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .section-container h2 {
+      color: #34495e;
+      margin-top: 0;
+      margin-bottom: 25px;
+      font-size: 1.6em;
+      border-bottom: 2px solid #e9ecef;
+      padding-bottom: 10px;
+    }
+
+    /* Base style for both save and load buttons */
+    .button-modern {
+      background-color: #3498db; /* Blue background */
+      color: white; /* White text */
+      border: none;
+      border-radius: 5px;
+      padding: 12px 25px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      display: inline-flex; /* Use flex to align icon/text if needed later */
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none; /* For label, ensure it doesn't look like a link */
+    }
+
+    .button-modern:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+    }
+
+    .button-modern:active {
+      background-color: #21618c;
+      transform: translateY(0);
+    }
+
+    /* Visually hide the actual file input */
+    #loadAliasesFromFile {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    /* Style the label to look like the button */
+    .file-input-label {
+        /* Inherits styles from .button-modern */
+        display: inline-flex; /* Ensure it behaves like a flex item */
+        margin-right: 20px; /* Space between button and checkbox */
+    }
+
+    input[type="checkbox"] {
+      margin-right: 8px;
+      transform: scale(1.2);
+      vertical-align: middle;
+    }
+
+    label {
+      font-size: 1em;
+      color: #555;
+      margin-left: -10px;
+    }
+
+    .load-options {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        gap: 15px; /* Space between items */
     }
   </style>
 </head>
 <body>
-  <h1>Import / Export Aliases</h1>
+  <h1>Manage URL Aliases</h1>
 
-  <div id="exportImport">
-    <button id="saveAliasesToFile">Save Aliases to File</button>
-    <input type="file" id="loadAliasesFromFile">
-    <input type="checkbox" id="merge" name="merge">
-    <label for="merge" style="font-size: 11pt">Merge with existing (vs. replace)</label><br><br>
+  <div class="section-container">
+    <h2>Save Aliases</h2>
+    <button id="saveAliasesToFile" class="button-modern">Save Aliases to File</button>
+  </div>
+
+  <div class="section-container">
+    <h2>Load Aliases</h2>
+    <div class="load-options">
+        <input type="file" id="loadAliasesFromFile" accept=".txt">
+        <label for="loadAliasesFromFile" class="button-modern file-input-label">Load Aliases from File</label>
+
+        <input type="checkbox" id="merge" name="merge">
+        <label for="merge">Merge with existing (vs. replace)</label>
+    </div>
   </div>
 
   <script src="options.js" type="module"></script>
