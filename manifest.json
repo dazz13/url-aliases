@@ -2,6 +2,10 @@
   "action": {
     "default_popup": "popup.html"
   },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
   "options_page": "options.html",
   "commands": {
     "_execute_action": {
@@ -21,5 +25,5 @@
   "manifest_version": 3,
   "name": "URL Aliases",
   "permissions": [ "declarativeNetRequest", "tabs", "downloads" ],
-  "version": "1.7"
+  "version": "1.71"
 }

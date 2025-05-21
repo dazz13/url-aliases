@@ -66,9 +66,16 @@ export default class AliasController {
     return ids;
   }
 
+  async reloadOneAlias() {
+    const aliases = await this.get_aliases();
+    if (aliases && aliases.length > 0) {
+      await this.update_alias(aliases[0]);
+    }
+  }
+
   async update_alias(alias) {
-    await this.delete_alias(alias.id)
-    await this.add_alias(alias)
+    await this.delete_alias(alias.id);
+    await this.add_alias(alias);
   }
 
   query_tabs(queryInfo) {
