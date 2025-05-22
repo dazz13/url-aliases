@@ -30,17 +30,22 @@ input[type=text]:focus {
     color: red;
 }
 
+.button:hover {
+    background-color: #ff5c5c;
+    color: black;
+}
+
+.main-table-holder {
+    overflow: scroll;
+    max-height: 500px;
+}
+
 .add-button-td {
     width: 23px;
 }
 
 .alias-td {
     width: 28px;
-}
-
-.button:hover {
-    background-color: #ff5c5c;
-    color: black;
 }
 
 table {
