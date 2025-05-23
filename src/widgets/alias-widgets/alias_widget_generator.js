@@ -28,6 +28,7 @@ export default class AliasWidgetGenerator extends BaseAliasWidgetGenerator {
     for (let alias of aliases) {
       await this.create(alias);
     }
+    document.dispatchEvent(new CustomEvent("tableCreated"));
   }
 
   async create(alias, insert_after_row = 2) {

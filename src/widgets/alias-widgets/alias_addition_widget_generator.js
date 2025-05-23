@@ -5,8 +5,6 @@ import Alias from "/src/logic/alias.js";
 import UrlGenerator from "/src/logic/url_generator.js";
 
 export default class AliasAdditionWidgetGenerator extends BaseAliasWidgetGenerator {
-  static WIDGET_ID = "alias-addition-widget";
-  static WIDGET_HOLDER = "alias-addition";
   static WIDGET_AUTOFOCUS_FIELD = "alias-input-field";
 
   constructor(alias_controller, alias_widget_generator) {

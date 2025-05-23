@@ -25,5 +25,5 @@
   "manifest_version": 3,
   "name": "URL Aliases",
   "permissions": [ "declarativeNetRequest", "tabs", "downloads" ],
-  "version": "1.72"
+  "version": "1.73"
 }
